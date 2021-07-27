@@ -7,7 +7,7 @@ SIZE="25 80 10"
 # Change this variable if this is not the case.
 POWERCORD_DIR="$(pwd)/powercord" 
 # I've placed my Themes folder alongside the utility, but this can be wherever you keep your themes.
-THEMESOURCE="/" #"$(pwd)/Themes"
+THEMESOURCE="$(pwd)/Themes"
 
 ShowError() {
 	whiptail --msgbox\
@@ -37,14 +37,18 @@ Please add some to that folder and then rerun this utility."
 else
 	# Create an array of the folders present for Whiptail to use
 	i=0
-	for folder in "$THEMESOURCE"/*/
-	do
+	for folder in "$THEMESOURCE"/*/; do
 		themes[i]=$(( i/3 )) # Entry number
 		themes[i+1]="$(basename $folder)" # Theme name
 		themes[i+2]="OFF" # Default state should be unchecked - TODO: Make this dependent on if POWERCORD_THEMES has the same theme installed, to make the box reflect the current state.
 		((i+=3)) # Increment index counter
 	done
-
+	
+	 # Due to IO stream nonsense, I am essentially forced to write the result to a file
+	 # instead of storing it directly into a variable. I didn't want to do this, however 
+	 # I have been bashing my head against this for an hour now and frankly I don't care.
+	exec 2> /tmp/whiptail_stderr
+	
 	# Show the selection menu
 	whiptail --checklist\
 		--scrolltext\
@@ -53,16 +57,27 @@ else
 		"Please make a selection for themes to install:"\
 		$SIZE\
 		"${themes[@]}" # Include the array of items created just now
-
-	# TODO: Detect when the Cancel button is pressed
-
+	
+	# Read the temporary file into a variable and tidy up
+	choices=$(</tmp/whiptail_stderr)
+	rm /tmp/whiptail_stderr
+	
+	# Detect when the Cancel button is pressed
+	if [[ ! $choices ]]; then
+		echo "Goodbye!"
+		exit 0
+	fi
+	
 	# TODO: Parse the IDs returned by Whiptail back into folder paths
 	#	Formula could look something like: $THEMESOURCE/$(( ${files[$ID/3+1]} ))
 	#	NOTE: Might be more worthwhile to just store the paths when building the array?
-
+	for ID in $choices; do
+		echo "$THEMESOURCE/$(( ${files[$ID/3+1]} ))"
+	done
+	
 	# Remove all folders in the Powercord Themes folder
 	#rm -rfv "$POWERCORD_THEMES"
-
+	
 	# Copy chosen folders into the folder
 	#cp -rv $idk "$POWERCORD_THEMES"
 fi
