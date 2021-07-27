@@ -39,9 +39,9 @@ else
 	i=0
 	for folder in "$THEMESOURCE"/*/
 	do
-		files[i]=$(( i/3 )) # Entry number
-		files[i+1]="$(basename $folder)" # Theme name
-		files[i+2]="OFF" # Default state should be unchecked - TODO: Make this dependent on if POWERCORD_THEMES has the same theme installed, to make the box reflect the current state.
+		themes[i]=$(( i/3 )) # Entry number
+		themes[i+1]="$(basename $folder)" # Theme name
+		themes[i+2]="OFF" # Default state should be unchecked - TODO: Make this dependent on if POWERCORD_THEMES has the same theme installed, to make the box reflect the current state.
 		((i+=3)) # Increment index counter
 	done
 
@@ -52,7 +52,7 @@ else
 		--ok-button "Install" --cancel-button "No, thanks"\
 		"Please make a selection for themes to install:"\
 		$SIZE\
-		"${files[@]}" # Include the array of items created just now
+		"${themes[@]}" # Include the array of items created just now
 
 	# TODO: Detect when the Cancel button is pressed
 
