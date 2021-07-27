@@ -39,7 +39,7 @@ else
 	i=0
 	for folder in "$THEMESOURCE"/*/; do
 		themes[i]=$(( i/3 )) # Entry number
-		themes[i+1]="$(basename $folder)" # Theme name
+		themes[i+1]="$(basename $folder)  " # Theme name
 		themes[i+2]="OFF" # Default state should be unchecked - TODO: Make this dependent on if POWERCORD_THEMES has the same theme installed, to make the box reflect the current state.
 		((i+=3)) # Increment index counter
 	done
@@ -47,21 +47,24 @@ else
 	 # Due to IO stream nonsense, I am essentially forced to write the result to a file
 	 # instead of storing it directly into a variable. I didn't want to do this, however 
 	 # I have been bashing my head against this for an hour now and frankly I don't care.
-	exec 2> /tmp/whiptail_stderr
+	 
+	exec 3> /tmp/whiptail_stderr # Open an IO stream into a temporary file
 	
-	# Show the selection menu
+	# Show the selection menu, redirecting its stderr to our temporary file
 	whiptail --checklist\
-		--scrolltext\
 		--backtitle "$TITLE" --title "$TITLE"\
 		--ok-button "Install" --cancel-button "No, thanks"\
 		"Please make a selection for themes to install:"\
 		$SIZE\
-		"${themes[@]}" # Include the array of items created just now
+		"${themes[@]}" 2>&3
+	exec 3>&- # Close the IO stream
 	
 	# Read the temporary file into a variable and tidy up
 	choices=$(</tmp/whiptail_stderr)
-	rm /tmp/whiptail_stderr
+	echo $choices
+	#rm /tmp/whiptail_stderr
 	
+	choices="\"0\" \"2\" \"4\""
 	# Detect when the Cancel button is pressed
 	if [[ ! $choices ]]; then
 		echo "Goodbye!"
@@ -71,7 +74,8 @@ else
 	# TODO: Parse the IDs returned by Whiptail back into folder paths
 	#	Formula could look something like: $THEMESOURCE/$(( ${files[$ID/3+1]} ))
 	#	NOTE: Might be more worthwhile to just store the paths when building the array?
-	for ID in $choices; do
+	for ID in "$choices"; do
+		echo $ID
 		echo "$THEMESOURCE/$(( ${files[$ID/3+1]} ))"
 	done
 	
