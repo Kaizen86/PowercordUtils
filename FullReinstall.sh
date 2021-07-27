@@ -13,7 +13,7 @@ done
 
 # https://askubuntu.com/questions/157779/how-to-determine-whether-a-process-is-running-or-not-and-make-use-it-to-make-a-c
 # Check to make sure that Discord isn't running, and ask to close it if so.
-if pgrep -x "gedit" > /dev/null; then
+if pgrep -x "DiscordCanary" > /dev/null; then
     read -p "
 Warning - Unable to proceed!
 Discord Canary is still running, and must be closed to reinstall.
