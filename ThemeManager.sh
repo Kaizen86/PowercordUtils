@@ -47,7 +47,6 @@ else
 	 # Due to IO stream nonsense, I am essentially forced to write the result to a file
 	 # instead of storing it directly into a variable. I didn't want to do this, however 
 	 # I have been bashing my head against this for an hour now and frankly I don't care.
-	 
 	exec 3> /tmp/whiptail_stderr # Open an IO stream into a temporary file
 	
 	# Show the selection menu, redirecting its stderr to our temporary file
@@ -60,28 +59,24 @@ else
 	exec 3>&- # Close the IO stream
 	
 	# Read the temporary file into a variable and tidy up
-	choices=$(</tmp/whiptail_stderr)
-	echo $choices
-	#rm /tmp/whiptail_stderr
+	choices=$(tr -d '"' < /tmp/whiptail_stderr)
+	rm /tmp/whiptail_stderr
 	
-	choices="\"0\" \"2\" \"4\""
 	# Detect when the Cancel button is pressed
 	if [[ ! $choices ]]; then
 		echo "Goodbye!"
 		exit 0
 	fi
 	
-	# TODO: Parse the IDs returned by Whiptail back into folder paths
-	#	Formula could look something like: $THEMESOURCE/$(( ${files[$ID/3+1]} ))
-	#	NOTE: Might be more worthwhile to just store the paths when building the array?
-	for ID in "$choices"; do
-		echo $ID
-		echo "$THEMESOURCE/$(( ${files[$ID/3+1]} ))"
-	done
-	
 	# Remove all folders in the Powercord Themes folder
-	#rm -rfv "$POWERCORD_THEMES"
+	rm -rfv "$POWERCORD_THEMES"/*
 	
-	# Copy chosen folders into the folder
-	#cp -rv $idk "$POWERCORD_THEMES"
+	# Loop over each selected theme
+	for ID in $choices; do
+		# Parse the IDs returned by Whiptail back into folder paths
+		src="$THEMESOURCE/${themes[$(( $ID/3+1 ))]}"
+		
+		# Copy chosen folders into the folder
+		cp -rv $src "$POWERCORD_THEMES"
+	done
 fi
