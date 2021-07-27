@@ -7,7 +7,7 @@ SIZE="25 80 10"
 # Change this variable if this is not the case.
 POWERCORD_DIR="$(pwd)/powercord" 
 # I've placed my Themes folder alongside the utility, but this can be wherever you keep your themes.
-THEMESOURCE="/tmp" #"$(pwd)/Themes"
+THEMESOURCE="/" #"$(pwd)/Themes"
 
 ShowError() {
 	whiptail --msgbox\
@@ -37,7 +37,7 @@ Please add some to that folder and then rerun this utility."
 else
 	# Create an array of the folders present for Whiptail to use
 	i=0
-	for folder in "$THEMESOURCE"/*
+	for folder in "$THEMESOURCE"/*/
 	do
 		files[i]=$(( i/3 )) # Entry number
 		files[i+1]="$(basename $folder)" # Theme name
