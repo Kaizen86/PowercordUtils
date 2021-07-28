@@ -90,7 +90,6 @@ Please grant write acccess and retry."
 	errors=0
 	for ID in $choices; do
 		# Parse the IDs returned by Whiptail back into folder paths
-		# BUG: This doesn't seem to work.
 		src="$THEMESOURCE/${themes[$(( $ID*3+1 ))]}"
 		
 		# Copy chosen folders into the folder
@@ -104,6 +103,7 @@ Please grant write acccess and retry."
 		fi
 	done
 	
+	# Completion message
 	whiptail --msgbox\
 		--backtitle "$TITLE" --title "$TITLE"\
 		"Operation finished!\n\
