@@ -16,6 +16,12 @@ ShowError() {
 		$SIZE
 }
 
+# Verify that whiptail is available on the system
+if [ ! "$(command -v whiptail)" ]; then
+	echo "Error: whiptail is not installed."
+	exit 1
+fi
+
 # Check if a -v flag was set for additional output
 [[ $1 = *-v* ]] && VERBOSE="-v" || VERBOSE=""
 
