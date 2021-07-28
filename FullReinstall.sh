@@ -72,4 +72,4 @@ All done!
 "
 
 # Start Discord automatically :)
-./DiscordCanary/DiscordCanary
+./DiscordCanary/DiscordCanary </dev/null &>/dev/null &
