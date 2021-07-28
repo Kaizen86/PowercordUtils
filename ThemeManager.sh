@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TITLE="Powercord Theme Manager"
-SIZE="25 80 10"
+SIZE="25 80 17"
 
 # I am assuming this utility is being used in conjunction with the FullReinstall.sh script
 # Change this variable if this is not the case.
@@ -39,16 +39,22 @@ Please add some to that folder and then rerun this utility."
 
 else
 	# Create an array of the folders present for Whiptail to use
+	
 	i=0
+	SAVEIFS=$IFS # Make a backup of this
+	IFS=$(echo -en "\n\b") # Properly handle folders with spaces
 	for folder in "$THEMESOURCE"/*/; do
 		themes[i]=$(( i/3 )) # Entry number
 		themes[i+1]="$(basename $folder)" # Theme name
 		[[ -d "$POWERCORD_THEMES/${themes[i+1]}" ]] && themes[i+2]="ON" || themes[i+2]="OFF" # Make the box reflect the current state.
+		
 		# Pad theme name to create a margin on the right of the items
 		themes[i+1]="${themes[i+1]}  "
+		
 		((i+=3)) # Increment index counter
 	done
-	
+	IFS=$SAVEIFS # Restore previous loop settings
+		
 	 # Due to IO stream nonsense, I am essentially forced to write the result to a file
 	 # instead of storing it directly into a variable. I didn't want to do this, however 
 	 # I have been bashing my head against this for an hour now and frankly I don't care.
