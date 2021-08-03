@@ -9,6 +9,10 @@ POWERCORD_DIR="$(pwd)/powercord"
 # I've placed my Themes folder alongside the utility, but this can be wherever you keep your themes.
 THEMESOURCE="$(pwd)/Themes"
 
+quit() {
+	echo "Goodbye!"
+	exit 0
+}
 ShowError() {
 	whiptail --msgbox\
 		--backtitle "$TITLE" --title "$TITLE"\
@@ -81,10 +85,9 @@ else
 	choices=$(tr -d '"' < /tmp/whiptail_stderr)
 	rm /tmp/whiptail_stderr
 	
-	# Detect when the Cancel button is pressed
+	# Detect if the Cancel button was pressed
 	if [[ $wtcode -ne 0 ]]; then
-		echo "Goodbye!"
-		exit 0
+		quit
 	fi
 	
 	# Remove all folders in the Powercord Themes folder
@@ -96,7 +99,7 @@ Without the ability to write to the folder, this utility cannot possibly functio
 Please grant write acccess and retry."
 		exit 1
 	fi
-		
+	
 	# Loop over each selected theme
 	successes=0
 	errors=0
@@ -116,15 +119,43 @@ Please grant write acccess and retry."
 	done
 	
 	# Completion message
-	whiptail --msgbox\
-		--backtitle "$TITLE" --title "$TITLE"\
-		"Operation finished!\n\
+	MSG="Operation finished!\n\
 Attempted to copy $(expr $successes + $errors) theme(s).\n\
-You will need to reload Powercord's theme list manually in order for the changes to apply.\n\
-\n\
 Successes: $successes\n\
-Errors: $errors\n\
+Errors: $errors\n\n\
+Discord Canary must be restarted in order for the changes to apply."
+	
+	# If Discord was installed via the FullReinstall script, we can offer to restart Discord for the user.
+	if [ 0 ]; then #[ -f "DiscordCanary/DiscordCanary" ]; then
+		whiptail --yesno\
+		--backtitle "$TITLE" --title "$TITLE"\
+		--ok-button "Proceed" --cancel-button "Close"\
+		"$MSG\n\
+This can either be done automatically right now, or later at your discretion.\n\
 \n\
-Press <Ok> to exit."\
-		$SIZE
+Do you wish to do this now?" $SIZE
+		
+		wtcode=$? # Store the return code
+		# Detect if the Close button was pressed
+		if [[ $wtcode -ne 0 ]]; then
+			quit
+		fi
+		
+		# First, kill any instances of Discord.
+		while pgrep -x "DiscordCanary" > /dev/null; do # It can take a few tries
+			killall DiscordCanary $VERBOSE
+		done
+		
+		# Next, restart it silently and detached from this process.
+		./DiscordCanary/DiscordCanary </dev/null &>/dev/null &
+		
+	# Otherwise, show a more generic "Restart it yourself" message
+	else
+		whiptail --msgbox\
+		--backtitle "$TITLE" --title "$TITLE"\
+		"$MSG\n\
+\n\
+Press <Ok> to exit." $SIZE
+	fi
 fi
+quit
