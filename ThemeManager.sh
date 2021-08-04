@@ -99,17 +99,17 @@ Without the ability to write to the folder, this utility cannot possibly functio
 Please grant write acccess and retry."
 		exit 1
 	fi
-	
-	# Loop over each selected theme
+		
+	# Copy each selected theme to the destination folder
 	successes=0
 	errors=0
 	for ID in $choices; do
 		# Parse the IDs returned by Whiptail back into folder paths
-		src="$THEMESOURCE/${themes[$(( $ID*3+1 ))]}"
+		name=${themes[$(( $ID*3+1 ))]}
+		src="$THEMESOURCE/$name"
 		
-		# Copy chosen folders into the folder
-		cp -r $VERBOSE $src "$POWERCORD_THEMES"
-
+ 		cp -r $VERBOSE $src "$POWERCORD_THEMES"
+		
 		# Keep track of how many errors and successes there were with copying
 		if [ $? -eq 0 ]; then
 			((successes++))
