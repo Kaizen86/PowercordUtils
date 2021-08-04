@@ -39,7 +39,7 @@ if [ -d "DiscordCanary" ]; then
 fi
 
 # Download and unpack Canary
-echo "\nDownloading Discord Canary..."
+echo -e "\nDownloading Discord Canary..."
 wget --show-progress --quiet "https://discordapp.com/api/download/canary?platform=linux&format=tar.gz" -O discord.tar.gz
 # Did that work?
 if [ $? -eq 0 ]; then
@@ -52,7 +52,7 @@ else
 fi
 
 # Clone the powercord repository
-echo "\nCloning powercord..."
+echo -e "\nCloning powercord..."
 git clone https://github.com/powercord-org/powercord 1>/dev/null
 # Did that fail?
 if [ $? -ne 0 ]; then skip_plug="true"; fi
