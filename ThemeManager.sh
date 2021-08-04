@@ -142,7 +142,7 @@ Do you wish to do this now?" $SIZE
 		fi
 		
 		# First, kill any instances of Discord.
-		while pgrep -x "DiscordCanary" > /dev/null; do # It can take a few tries
+		while pgrep -x "DiscordCanary" &> /dev/null; do # It can take a few tries
 			killall DiscordCanary $VERBOSE
 		done
 		
