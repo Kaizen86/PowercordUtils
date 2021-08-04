@@ -126,7 +126,7 @@ Errors: $errors\n\n\
 Discord Canary must be restarted in order for the changes to apply."
 	
 	# If Discord was installed via the FullReinstall script, we can offer to restart Discord for the user.
-	if [ 0 ]; then #[ -f "DiscordCanary/DiscordCanary" ]; then
+	if [ -f "DiscordCanary/DiscordCanary" ]; then
 		whiptail --yesno\
 		--backtitle "$TITLE" --title "$TITLE"\
 		--ok-button "Proceed" --cancel-button "Close"\
