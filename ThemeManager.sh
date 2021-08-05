@@ -122,40 +122,73 @@ Please grant write acccess and retry."
 	MSG="Operation finished!\n\
 Attempted to copy $(expr $successes + $errors) theme(s).\n\
 Successes: $successes\n\
-Errors: $errors\n\n\
-Discord Canary must be restarted in order for the changes to apply."
+Errors: $errors\n"
+
+	# Present different completion menus depending on:
+	# Whether Discord is running
+	# If Discord was installed via the FullReinstall script
 	
-	# If Discord was installed via the FullReinstall script, we can offer to restart Discord for the user.
-	if [ -f "DiscordCanary/DiscordCanary" ]; then
-		whiptail --yesno\
-		--backtitle "$TITLE" --title "$TITLE"\
-		--ok-button "Proceed" --cancel-button "Close"\
-		"$MSG\n\
+	if [[ $(pgrep -x "DiscordCanary") ]]; then
+		MSG+="\nDiscord Canary must be restarted in order for the changes to apply."
+		
+		# If Discord was installed via the FullReinstall script, we can offer to restart Discord for the user.
+		if [ -f "DiscordCanary/DiscordCanary" ]; then
+			whiptail --yesno\
+			--backtitle "$TITLE" --title "$TITLE"\
+			--ok-button "Proceed" --cancel-button "Close"\
+			"$MSG\n\
 This can either be done automatically right now, or later at your discretion.\n\
 \n\
 Do you wish to do this now?" $SIZE
 		
-		wtcode=$? # Store the return code
-		# Detect if the Close button was pressed
-		if [[ $wtcode -ne 0 ]]; then
-			quit
-		fi
-		
-		# First, kill any instances of Discord.
-		while pgrep -x "DiscordCanary" &> /dev/null; do # It can take a few tries
-			killall DiscordCanary $VERBOSE
-		done
-		
-		# Next, restart it silently and detached from this process.
-		./DiscordCanary/DiscordCanary </dev/null &>/dev/null &
-		
-	# Otherwise, show a more generic "Restart it yourself" message
-	else
-		whiptail --msgbox\
-		--backtitle "$TITLE" --title "$TITLE"\
-		"$MSG\n\
-\n\
+			wtcode=$? # Store the return code
+			# Detect if the Close button was pressed
+			if [[ $wtcode -ne 0 ]]; then
+				quit
+			fi
+			
+			# First, kill any instances of Discord.
+			while pgrep -x "DiscordCanary" &> /dev/null; do # It can take a few tries
+				killall DiscordCanary $VERBOSE
+			done
+			
+			# Next, restart it silently and detached from this process.
+			./DiscordCanary/DiscordCanary </dev/null &>/dev/null &
+			
+		# Otherwise, show a more generic "Restart it yourself" message
+		else
+			whiptail --msgbox\
+			--backtitle "$TITLE" --title "$TITLE"\
+			"$MSG\n\
+The next time you start Discord, the themes should apply.\n\
 Press <Ok> to exit." $SIZE
+		fi
+	else
+		# If Discord was installed via the FullReinstall script, we can offer to start Discord for the user.
+		if [ -f "DiscordCanary/DiscordCanary" ]; then
+			whiptail --yesno\
+			--backtitle "$TITLE" --title "$TITLE"\
+			--ok-button "Proceed" --cancel-button "Close"\
+			"$MSG\n\
+Do you wish to do start Discord now?" $SIZE
+		
+			wtcode=$? # Store the return code
+			# Detect if the Close button was pressed
+			if [[ $wtcode -ne 0 ]]; then
+				quit
+			fi
+			
+			# Start it silently and detached from this process.
+			./DiscordCanary/DiscordCanary </dev/null &>/dev/null &
+			
+		# Otherwise, show a more generic "Start it yourself" message
+		else
+			whiptail --msgbox\
+			--backtitle "$TITLE" --title "$TITLE"\
+			"$MSG\n\
+The next time you start Discord, the themes should apply.\n\
+Press <Ok> to exit." $SIZE
+		fi
 	fi
 fi
 quit
