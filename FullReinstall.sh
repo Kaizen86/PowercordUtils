@@ -28,6 +28,11 @@ if [ -d "powercord" ]; then
 	echo "Removing powercord/"
 	rm -rf powercord
 fi
+# Sometimes, there are a few files that are stubborn to remove.
+if [ -d "powercord" ]; then
+	echo ">:( Forcibly removing powercord/"
+	sudo rm -rfv powercord # You may need to enter a password here.
+fi
 if [ -d "DiscordCanary" ]; then
 	echo "Removing DiscordCanary/"
 	rm -rf DiscordCanary
@@ -79,18 +84,17 @@ if [ "$skip_plug" != "true" ];  then
 	npm run unplug # Just in case, run unplug first.
 	npm run plug
 	cd ..
+	
+	# Autorun the Theme Manager
+	./ThemeManager.sh
 else
-	echo "\nSkipping plug of Powercord due to one or more failed steps.
+	echo "
+Skipping plug of Powercord due to one or more failed steps.
 Note: You will have to plug Powercord manually after correcting the issue(s).
-Please refer to https://powercord.dev/installation for how to do this.\n"
+Please refer to https://powercord.dev/installation for how to do this."
 fi
 
-echo "
-All done! :)
-"
-
-# Autorun the Theme Manager
-./ThemeManager.sh
+echo -e "\nAll done! :)\n"
 
 # Start Discord automatically :)
 ./DiscordCanary/DiscordCanary </dev/null &>/dev/null &
