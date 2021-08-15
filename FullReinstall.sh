@@ -92,9 +92,9 @@ else
 Skipping plug of Powercord due to one or more failed steps.
 Note: You will have to plug Powercord manually after correcting the issue(s).
 Please refer to https://powercord.dev/installation for how to do this."
-fi
-
-echo -e "\nAll done! :)\n"
 
 # Start Discord automatically :)
 ./DiscordCanary/DiscordCanary </dev/null &>/dev/null &
+fi
+
+echo -e "\nAll done! :)\n"
