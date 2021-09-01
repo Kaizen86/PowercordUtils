@@ -18,5 +18,9 @@ There are a small handful of required packages and libraries for all this to wor
 * libnss3
 * libgbm-dev
 ### My requirements:
-* npm (To install Powercord)
-* whiptail (To display the menus in the Theme Manager)
+Listed are the programs needed by the shellscripts that may need to be installed, along with a brief description of what the command is needed for.
+* `wget` (Download Discord)
+* `git` (Download Powercord)
+* `sed` (Automating Powercord install)
+* `npm` (Install Powercord)
+* `whiptail` (Displays the menus in the Theme Manager)
