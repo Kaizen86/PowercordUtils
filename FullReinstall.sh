@@ -25,6 +25,12 @@ fi
 
 # Remove the directories if they already exist
 if [ -d "powercord" ]; then
+	# Backup the settings folder if there is one
+	if [ -d "powercord/settings" ]; then
+		restore_settings="true"
+		echo "Quickly making a backup of your powercord settings"
+		cp -r powercord/settings /tmp/powercord-settings-backup
+	fi
 	echo "Removing powercord/"
 	rm -rf powercord
 fi
@@ -66,6 +72,12 @@ if [ $? -ne 0 ]; then skip_plug="true"; fi
 if [ "$skip_plug" != "true" ];  then
 	# All good, proceed!
 
+	# Restore the settings folder if we copied it
+	if [ "$restore_settings" == "true" ]; then
+		echo "Restoring settings folder"
+		cp -r /tmp/powercord-settings-backup powercord/
+	fi
+
 	# We have to patch the powercord injector plug in order to recognise our custom install folder automatically.
 	# If this is not done, the user is prompted to manually specify the DiscordCanary folder we just downloaded.
 	INSTALL_DIR="$(pwd)/DiscordCanary"
@@ -75,6 +87,9 @@ if [ "$skip_plug" != "true" ];  then
 	In the event that you get prompted, paste in:
 	\"$INSTALL_DIR\"
 	"
+	# Within the linux injector script, locate the array called KnownLinuxPaths.
+	# We insert an additional string into that array stating the installation directory.
+	# That way, the install script will check the new folder first.
 	sed --in-place "/^const KnownLinuxPaths.*/a\ \ '$INSTALL_DIR'," powercord/injectors/linux.js
 
 	# Standard powercord installation procedures.
@@ -84,7 +99,7 @@ if [ "$skip_plug" != "true" ];  then
 	npm run unplug # Just in case, run unplug first.
 	npm run plug
 	cd ..
-	
+
 	# Autorun the Theme Manager
 	./ThemeManager.sh
 else
