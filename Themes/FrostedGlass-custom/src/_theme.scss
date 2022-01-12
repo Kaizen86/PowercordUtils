@@ -6,11 +6,11 @@
  * @invite ZHthyCw
  * @donate https://paypal.me/IanRGibson
  * @authorId 174868361040232448
- * @source https://github.com/DiscordStyles/FrostedGlass
+ * @source https://github.com/Gibbu/BetterDiscord-Themes/tree/master/FrostedGlass
  * @website https://gibbu.me/
 */
 
-@import url("https://discordstyles.github.io/FrostedGlass/base.css");
+// @import url("https://gibbu.github.io/BetterDiscord-Themes/FrostedGlass/dist/FrostedGlass.css");
 
 /* BlackBox tags */
 @import url('https://monstrousdev.github.io/themes/addons/user-tags.css');
@@ -21,8 +21,7 @@
 :root {
   /* Background image variables */
   --background-image: url('http://localhost:8089/FrostedGlass-custom/assets/background.jpg'); /* Main background image */
-  
-  --background-image-blur: 6px; /* Blur intensity of --background-image | Must end in px | DEFAULT: 5px */
+  --background-image-blur: 5px; /* Blur intensity of --background-image | Must end in px | DEFAULT: 5px */
   --background-image-size: cover; /* Size of the background image | DEFAUT: cover | OPTIONS: cover, contain */
   --background-image-position: center; /* Position of background image | DEAFULT: center | OPTIONS: top, right, bottom, left, center */
 
@@ -39,10 +38,10 @@
 
   /* Brightness variables */
   --serverlist-brightness: 0.8; /* Brightness for serverlist | 0 - 1 (decimals allowed) | DEFAULT: 0.8 */
-  --left-brightness: 0.7; /* Channels and DM list brightness | 0 - 1 (decimals allowed) | DEFAULT: 0.8 */
+  --left-brightness: 0.8; /* Channels and DM list brightness | 0 - 1 (decimals allowed) | DEFAULT: 0.8 */
   --middle-brightness: 0.6; /* Chat brightness | 0 - 1 (decimals allowed) | DEFAULT: 0.6 */
-  --right-brightness: 0.14; /* Members and Now Playing brightness | 0 - 1 (decimals allowed) | DEFAULT: 0 */
-  --popout-modal-brightness: 0.3; /* Brightness for popouts and modals | 0 - 1 (decimals allowed) | DEFAULT: 0.75 */
+  --right-brightness: 0; /* Members and Now Playing brightness | 0 - 1 (decimals allowed) | DEFAULT: 0 */
+  --popout-modal-brightness: 0.75; /* Brightness for popouts and modals | 0 - 1 (decimals allowed) | DEFAULT: 0.75 */
 
   /* Gradient variables */
   --gradient-primary: 103,58,183; /* DEFAULT: 103,58,183 */
@@ -58,7 +57,6 @@
   --window-roundness: 10px; /* Roundness of Discord | DEFAULT: 10px */
   --scrollbar-colour: rgba(255,255,255,0.05); /* DEFAULT: rgba(255,255,255,0.05) */
   --link-colour: #00b0f4; /* DEFAULT: #00b0f4 */
-  --show-gift-gif-buttons: none; /* Show buttons: block | Hide buttons: none | DEFAULT: none */
 
   /*
     Visit https://fonts.google.com and select one to your liking.

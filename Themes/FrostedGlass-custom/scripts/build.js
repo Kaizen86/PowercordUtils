@@ -1,32 +1,12 @@
-// Used to build scss files to the dist folder.
+// GitHub action used to build scss files to the dist folder.
+// You are not meant to run this locally.
 
-const sass = require('sass');
-const fs = require('fs');
-const postcss = require('postcss');
-const autoprefixer = require('autoprefixer');
+const compile = require('./compile');
+const {build} = require('./config.json');
 
-console.log('Building FrostedGlass.css file...');
-
-sass.render({
-	file: 'src/_base.scss',
-	outputStyle: 'expanded'
-}, (err, result) => {
-	if (err) {
-		console.error(err);
-		return false;
-	}
-
-	const newRes = Buffer.from(result.css).toString();
-
-	postcss([autoprefixer])
-		.process(newRes, {
-			from: undefined,
-			to: undefined
-		})
-		.then(postcssRes => {
-			fs.writeFile('dist/FrostedGlass.css', postcssRes.css, (err) => {
-				if (err) console.error(err);
-				else console.log(`Successfully built FrostedGlass.css file. (${(result.stats.duration/60000 * 60).toFixed(2)}s)`);
-			})
-		})
+build.forEach(step => {
+	compile({
+		target: step.target,
+		output: [...step.output]
+	});
 })

@@ -1,7 +1,7 @@
 {
   "name": "frostedglass",
   "version": "1.0.0",
-  "description": "Discord redesigned to be simplified. Design by jacktompsett on Behance.",
+  "description": "Display your picture of choice with adjustable blur and brightness.",
   "repository": "https://github.com/DiscordStyles/FrostedGlass.git",
   "author": "Gibbu <Gibbu_@hotmail.com>",
   "license": "MIT",
@@ -10,10 +10,12 @@
     "dev": "node ./scripts/dev",
     "build": "node ./scripts/build"
   },
+  "dependencies": {
+    "autoprefixer": "^10.3.7",
+    "postcss": "^8.3.9",
+    "sass": "^1.42.1"
+  },
   "devDependencies": {
-    "autoprefixer": "^10.3.1",
-    "chokidar": "^3.5.2",
-    "postcss": "^8.3.6",
-    "sass": "^1.35.2"
+    "chokidar": "^3.5.2"
   }
 }
