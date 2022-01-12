@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo $(pwd)
-
 echo "Do you wish to proceed with reinstalling Canary?"
 select answer in "Confirm" "Cancel"
 do
@@ -51,12 +49,12 @@ fi
 
 # Download and unpack Canary
 echo -e "\nDownloading Discord Canary..."
-wget --show-progress --quiet "https://discordapp.com/api/download/canary?platform=linux&format=tar.gz" -O discord.tar.gz
+wget --show-progress --quiet "https://discordapp.com/api/download/canary?platform=linux&format=tar.gz" -O /tmp/discordcanary.tar.gz
 # Did that work?
 if [ $? -eq 0 ]; then
 	echo "Unpacking..."
-	tar -xf discord.tar.gz
-	rm discord.tar.gz
+	tar -xf /tmp/discordcanary.tar.gz -C `pwd`
+	rm /tmp/discordcanary.tar.gz
 else
 	echo "Unable to download, skipping.\n"
 	skip_plug="true"
@@ -75,7 +73,7 @@ if [ "$skip_plug" != "true" ];  then
 	# Restore the settings folder if we copied it
 	if [ "$restore_settings" == "true" ]; then
 		echo "Restoring settings folder"
-		cp -r /tmp/powercord-settings-backup powercord/
+		cp -r /tmp/powercord-settings-backup powercord/settings
 	fi
 
 	# We have to patch the powercord injector plug in order to recognise our custom install folder automatically.
