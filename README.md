@@ -14,10 +14,10 @@ These are a small set of scripts to aid in the management of a Discord+Powercord
 	
 ## Dependencies
 There are a small handful of required packages and libraries for all this to work properly.
-### Discord's requirements:
-* libnss3
-* libgbm-dev
-### My requirements:
+### Discord's dependencies:
+* `libnss3`
+* `libgbm-dev`
+### My dependencies:
 Listed are the programs needed by the shellscripts that may need to be installed, along with a brief description of what the command is needed for.
 * `wget` (Download Discord)
 * `git` (Download Powercord)
