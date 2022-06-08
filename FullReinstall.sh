@@ -27,7 +27,7 @@ if [ -d "powercord" ]; then
 	if [ -d "powercord/settings" ]; then
 		restore_settings="true"
 		echo "Quickly making a backup of your powercord settings"
-		cp -r powercord/settings /tmp/powercord-settings-backup
+		cp -r powercord/settings/. /tmp/powercord-settings-backup
 	fi
 	echo "Removing powercord/"
 	rm -rf powercord
@@ -85,11 +85,11 @@ if [ "$skip_plug" != "true" ];  then
 	In the event that you get prompted, paste in:
 	\"$INSTALL_DIR\"
 	"
-	# Within the linux injector script, locate the array called KnownLinuxPaths.
-	# We insert an additional string into that array stating the installation directory.
-	# That way, the install script will check the new folder first.
-	sed --in-place "/^const KnownLinuxPaths.*/a\ \ '$INSTALL_DIR'," powercord/injectors/linux.js
-
+	# Within the linux injector script, locate the array of Canary install paths.
+	# Then, insert the correct directory at the top of that array.
+	# That way, the install script will check the new folder automatically.
+	sed --in-place "/^  canary: \[.*/a\ \   '$INSTALL_DIR'," powercord/injectors/linux.js
+	
 	# Standard powercord installation procedures.
 	echo "Installing powercord"
 	cd powercord
@@ -106,8 +106,8 @@ Skipping plug of Powercord due to one or more failed steps.
 Note: You will have to plug Powercord manually after correcting the issue(s).
 Please refer to https://powercord.dev/installation for how to do this."
 
-# Start Discord automatically :)
-./DiscordCanary/DiscordCanary </dev/null &>/dev/null &
+	# Start Discord automatically :)
+	./DiscordCanary/DiscordCanary </dev/null &>/dev/null &
 fi
 
 echo -e "\nAll done! :)\n"
