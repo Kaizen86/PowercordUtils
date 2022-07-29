@@ -1,3 +1,6 @@
+# --No longer in development--
+Powercord has reached its End Of Life, effective 25/07/2022. As such, this project does not serve a purpose and the repository has been archived.
+
 # Powercord Utilities
 These are a small set of scripts to aid in the management of a Discord+Powercord installation. Sometimes it breaks, at least for me, and I have to reinstall it. Or perhaps I wanted to tweak a theme, and I would have to copy the theme into a hard-to-get-to folder. These annoyances got tiresome, so I wrote two scripts to automate them.
 ## Contents
